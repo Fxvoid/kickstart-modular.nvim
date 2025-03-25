@@ -1,11 +1,7 @@
 vim.keymap.set('t', '<esc><esc>', '<c-\\><c-n>')
 
-local state = {
-  floating = {
-    buf = -1,
-    win = -1,
-  },
-}
+local state = {}
+local current = -1
 
 local function create_floating_window(opts)
   opts = opts or {}
@@ -37,17 +33,29 @@ local function create_floating_window(opts)
   return { buf = buf, win = win }
 end
 
-local function toggle_terminal()
-  if not vim.api.nvim_win_is_valid(state.floating.win) then
-    state.floating = create_floating_window { buf = state.floating.buf }
-    if vim.bo[state.floating.buf].buftype ~= 'terminal' then
+local function toggle_terminal(idx)
+  if not state[idx] then
+    state[idx] = { buf = -1, win = -1 }
+  end
+  if current ~= -1 and current ~= idx and vim.api.nvim_win_is_valid(state[current].win) then
+    vim.api.nvim_win_hide(state[current].win)
+  end
+  if not vim.api.nvim_win_is_valid(state[idx].win) then
+    state[idx] = create_floating_window { buf = state[idx].buf }
+    if vim.bo[state[idx].buf].buftype ~= 'terminal' then
       vim.cmd.term()
     end
+    current = idx
   else
-    vim.api.nvim_win_hide(state.floating.win)
+    vim.api.nvim_win_hide(state[idx].win)
+    current = -1
   end
   vim.cmd 'normal i'
 end
 
 vim.api.nvim_create_user_command('Floaterm', toggle_terminal, {})
-vim.keymap.set({ 'n', 't' }, '<leader>t1', toggle_terminal, { desc = 'Floating terminal 1' })
+for i = 1, 9, 1 do
+  vim.keymap.set({ 'n' }, '<leader>t' .. i, function()
+    toggle_terminal(i)
+  end, { desc = 'Floating terminal ' .. i })
+end
