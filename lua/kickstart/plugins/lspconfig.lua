@@ -211,7 +211,9 @@ return {
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
+        cssls = {},
+        jsonls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -219,7 +221,7 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -236,6 +238,11 @@ return {
             },
           },
         },
+      }
+
+      require('lspconfig')['gdscript'].setup {
+        name = 'godot',
+        cmd = vim.lsp.rpc.connect('127.0.0.1', 6005),
       }
 
       -- Ensure the servers and tools above are installed
