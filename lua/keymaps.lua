@@ -33,6 +33,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 vim.keymap.set('n', '<leader>pd', ':NeovimProjectDiscover<CR>', { desc = '[P]rojects [D]iscover' })
 vim.keymap.set('n', '<leader>ph', ':NeovimProjectHistory<CR>', { desc = '[P]rojects [H]istory' })
+vim.keymap.set('n', '<leader>cc', ':CodeCompanionActions<CR>', { desc = '[C]ode [C]ompanion' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
