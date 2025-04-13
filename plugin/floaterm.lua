@@ -59,3 +59,9 @@ for i = 1, 9, 1 do
     toggle_terminal(i)
   end, { desc = 'Floating terminal ' .. i })
 end
+
+vim.keymap.set('n', '<esc>', function()
+  if current ~= -1 then
+    toggle_terminal(current)
+  end
+end)
